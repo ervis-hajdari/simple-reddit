@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { Subreddis, Comments, Posts } from "./components";
+import AppLayout from "./layouts";
+
+import { useRoutes } from "react-router-dom";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const pages = useRoutes([
+    {
+      path: "/",
+      element: (
+        <AppLayout>
+          <Subreddis />
+        </AppLayout>
+      ),
+    },
+    {
+      path: "r/:subredditID",
+      element: (
+        <AppLayout>
+          <Posts />
+        </AppLayout>
+      ),
+    },
+    {
+      path: "r/:subredditID/:postID/comments",
+      element: (
+        <AppLayout>
+          <Comments />
+        </AppLayout>
+      ),
+    },
+  ]);
+  return pages;
 }
 
 export default App;

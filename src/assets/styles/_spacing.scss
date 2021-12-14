@@ -1,0 +1,26 @@
+//Generate spacing ( padding - margin ) --> 2px, 4px, 6px to 64px
+
+@for $i from 0 through 32 {
+  @include padding($i * 2);
+  @include margin($i * 2);
+}
+
+.m-auto {
+  margin: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
+.mb-auto {
+  margin-bottom: auto;
+}

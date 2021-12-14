@@ -1,0 +1,92 @@
+// spacing
+
+@mixin padding($val, $prefix: "p") {
+  // padding
+  .#{$prefix}-#{$val} {
+    padding: $val + px;
+  }
+
+  .#{$prefix}x-#{$val} {
+    padding-left: $val + px;
+    padding-right: $val + px;
+  }
+
+  .#{$prefix}y-#{$val} {
+    padding-top: $val + px;
+    padding-bottom: $val + px;
+  }
+
+  .#{$prefix}t-#{$val} {
+    padding-top: $val + px;
+  }
+
+  .#{$prefix}b-#{$val} {
+    padding-bottom: $val + px;
+  }
+
+  .#{$prefix}l-#{$val} {
+    padding-left: $val + px;
+  }
+
+  .#{$prefix}r-#{$val} {
+    padding-right: $val + px;
+  }
+}
+
+@mixin margin($val, $prefix: "m") {
+  // margin
+  .#{$prefix}-#{$val} {
+    margin: $val + px;
+  }
+
+  .#{$prefix}x-#{$val} {
+    margin-left: $val + px;
+    margin-right: $val + px;
+  }
+
+  .#{$prefix}y-#{$val} {
+    margin-top: $val + px;
+    margin-bottom: $val + px;
+  }
+  .#{$prefix}t-#{$val} {
+    margin-top: $val + px;
+  }
+
+  .#{$prefix}b-#{$val} {
+    margin-bottom: $val + px;
+  }
+
+  .#{$prefix}l-#{$val} {
+    margin-left: $val + px;
+  }
+
+  .#{$prefix}r-#{$val} {
+    margin-right: $val + px;
+  }
+}
+
+// border-radius
+@mixin radius($val, $prefix: "radius") {
+  .#{$prefix} {
+    // padding
+
+    &-#{$val} {
+      border-radius: $val + rem;
+    }
+
+    &-tl-#{$val} {
+      border-top-left-radius: $val + rem;
+    }
+
+    &-tr#{$val} {
+      border-top-right-radius: $val + rem;
+    }
+
+    &-bl#{$val} {
+      border-bottom-right-radius: $val + rem;
+    }
+    &-br#{$val} {
+      border-bottom-left-radius: $val + rem;
+    }
+  }
+}

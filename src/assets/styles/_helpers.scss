@@ -1,0 +1,13 @@
+//Generate border radius ( all directions ) --> radius 2rem, 4rem, 6rem to 64rem
+
+@for $i from 1 through 10 {
+  @include radius($i);
+}
+
+.border-gray {
+  border: 2px solid rgb(194, 194, 194);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
