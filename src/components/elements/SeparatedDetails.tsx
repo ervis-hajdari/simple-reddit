@@ -1,7 +1,20 @@
 import React from "react";
 import TimeAgo from "react-timeago";
 
-const SeparatedDetails = ({ title, description, details, onClick }) => {
+interface SeperatedDetailsProps {
+  key?: any;
+  title?: string;
+  description?: string;
+  details?: { createdAt: string; user: string };
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+}
+
+const SeparatedDetails: React.FC<SeperatedDetailsProps> = ({
+  title,
+  description,
+  details,
+  onClick,
+}) => {
   return (
     <div
       className="py-20 px-30 cursor-pointer"

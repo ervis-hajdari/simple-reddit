@@ -2,12 +2,33 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
-const PreferenceAction = ({ type, preference, onClick }) => {
-  const voteColors = {
+interface Preference {
+  like: string;
+  dislike: string;
+  value: number;
+}
+
+interface PreferenceActionProps {
+  type: string;
+  preference: any;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+}
+
+const PreferenceAction: React.FC<PreferenceActionProps> = ({
+  type,
+  preference,
+  onClick,
+}) => {
+  const voteColors: any = {
     like: "#6dc16d",
     dislike: "#ca7979",
     neutral: "#bdbbbb",
   };
+
+  const getObjectValue =
+    <T extends object, U extends keyof T>(key: U) =>
+    (obj: T) =>
+      obj[key];
 
   return (
     <div onClick={onClick} className="cursor-pointer">
@@ -20,7 +41,7 @@ const PreferenceAction = ({ type, preference, onClick }) => {
   );
 };
 
-const CheckVotes = ({ likes }) => {
+const CheckVotes: React.FC<{ likes: number }> = ({ likes }) => {
   const [currentPreference, setCurrentPreference] = React.useState({
     like: false,
     dislike: false,

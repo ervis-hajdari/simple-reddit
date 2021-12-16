@@ -5,9 +5,9 @@ import { useParams } from "react-router";
 const useComments = () => {
   const { subredditID, postID } = useParams();
 
-  const [fetching, setFetching] = React.useState(true);
-  const [data, setData] = React.useState([]);
-  const [error, setError] = React.useState(false);
+  const [fetching, setFetching] = React.useState<boolean>(true);
+  const [data, setData] = React.useState<object[]>([]);
+  const [error, setError] = React.useState<boolean>(false);
 
   const asyncFetch = async () => {
     try {

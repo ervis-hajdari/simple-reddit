@@ -10,21 +10,30 @@ import { CheckVotes, Container, SeparatedDetails } from "./elements";
 import { setHeaderDescriber } from "../core/reducers/header";
 import Loading from "react-loading";
 
-const Posts = ({ pageStates, setPageState }) => {
+interface PostsProps {
+  pageStates: {
+    loading: string;
+    error: string;
+    neutral: string;
+  };
+  setPageState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Posts: React.FC<PostsProps> = ({ pageStates, setPageState }) => {
   const dispatch = useDispatch();
 
-  const options = [
+  const options: object[] = [
     { value: "title", label: "Title" },
     { value: "date", label: "Date" },
   ];
 
   const navigate = useNavigate();
-  const ref = React.useRef();
+  const ref = React.useRef<HTMLDivElement>(null);
 
-  const [sortPosts, setSortPosts] = React.useState("date");
-  const [page, setPage] = React.useState(1);
+  const [sortPosts, setSortPosts] = React.useState<string>("date");
+  const [page, setPage] = React.useState<number>(1);
 
-  const lastElementIsVisible = useVisibilityChecker(ref);
+  const lastElementIsVisible: boolean = useVisibilityChecker(ref);
 
   const [subredditFetching, subredditData, subredditError] =
     useSingleSubreddit();
@@ -69,26 +78,38 @@ const Posts = ({ pageStates, setPageState }) => {
           />
         </div>
         <div className="mt-30 flex column align-end">
-          {postsData.map((post, ind) => (
-            <div
-              key={ind}
-              className="pb-30"
-              style={{ maxWidth: 750, width: "100%" }}
-            >
-              <div>
-                <Container key={ind}>
-                  <CheckVotes likes={post.upvotes} />
+          {postsData.map(
+            (
+              post: {
+                upvotes: number;
+                title: string;
+                id: string;
+                createdAt: string;
+                user: string;
+                body: string;
+              },
+              ind: number
+            ) => (
+              <div
+                key={ind}
+                className="pb-30"
+                style={{ maxWidth: 750, width: "100%" }}
+              >
+                <div>
+                  <Container key={ind}>
+                    <CheckVotes likes={post.upvotes} />
 
-                  <SeparatedDetails
-                    onClick={() => navigate(`${post.id}/comments`)}
-                    title={post.title}
-                    description={post.body}
-                    details={{ user: post.user, createdAt: post.createdAt }}
-                  />
-                </Container>
+                    <SeparatedDetails
+                      onClick={() => navigate(`${post.id}/comments`)}
+                      title={post.title}
+                      description={post.body}
+                      details={{ user: post.user, createdAt: post.createdAt }}
+                    />
+                  </Container>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
           <div ref={ref} className="flex-center">
             {!noMoreData ? (
               <Loading type="spin" width="40px" color="lightgray" />

@@ -2,13 +2,13 @@ import React from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 
-const usePosts = (page, sortBy) => {
+const usePosts = (page: number, sortBy: string) => {
   const { subredditID } = useParams();
 
-  const [fetching, setFeching] = React.useState(true);
-  const [data, setData] = React.useState([]);
-  const [noMoreData, setNoMoreData] = React.useState(false);
-  const [error, setError] = React.useState(false);
+  const [fetching, setFeching] = React.useState<boolean>(true);
+  const [data, setData] = React.useState<object[] | any>([]);
+  const [noMoreData, setNoMoreData] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<boolean>(false);
 
   const baseURL = "https://6040c786f34cf600173c8cb7.mockapi.io/subreddits";
 
@@ -21,7 +21,7 @@ const usePosts = (page, sortBy) => {
 
       data.length === 0
         ? setNoMoreData(true)
-        : setData((prev) => [...prev, ...data]);
+        : setData((prev: object[]) => [...prev, ...data]);
 
       setFeching(false);
     } catch (e) {
@@ -32,7 +32,9 @@ const usePosts = (page, sortBy) => {
 
   React.useEffect(() => setData([]), [sortBy]);
 
-  React.useEffect(() => asyncFetch(), [sortBy, page]);
+  React.useEffect(() => {
+    asyncFetch();
+  }, [sortBy, page]);
 
   return [fetching, data, noMoreData, error];
 };

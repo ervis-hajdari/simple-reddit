@@ -5,11 +5,12 @@ import { useParams } from "react-router";
 const useSinglePost = () => {
   const { subredditID, postID } = useParams();
 
-  const [fetching, setFeching] = React.useState(true);
-  const [data, setData] = React.useState([]);
-  const [error, setError] = React.useState(false);
+  const [fetching, setFeching] = React.useState<boolean>(true);
+  const [data, setData] = React.useState<object>({});
+  const [error, setError] = React.useState<boolean>(false);
 
-  const baseURL = "https://6040c786f34cf600173c8cb7.mockapi.io/subreddits";
+  const baseURL: string =
+    "https://6040c786f34cf600173c8cb7.mockapi.io/subreddits";
 
   const asyncFetch = async () => {
     try {
@@ -27,7 +28,9 @@ const useSinglePost = () => {
     }
   };
 
-  React.useEffect(() => asyncFetch(), []);
+  React.useEffect(() => {
+    asyncFetch();
+  }, []);
 
   return [fetching, data, error];
 };

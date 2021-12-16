@@ -3,8 +3,14 @@ import Loading from "react-loading";
 
 import Header from "./Header";
 
-const AppLayout = ({ children }) => {
-  const pageStates = {
+interface PageStates {
+  loading: string;
+  error: string;
+  neutral: string;
+}
+
+const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const pageStates: PageStates = {
     loading: "loading",
     error: "error",
     neutral: "neutral",
@@ -12,13 +18,7 @@ const AppLayout = ({ children }) => {
 
   const [pageState, setPageState] = React.useState(pageStates.loading);
 
-  // React.useEffect(() => {
-  //   pageState !== "neutral"
-  //     ? (document.body.style.overflowX = "hidden")
-  //     : (document.body.style.overflowX = "auto");
-  // }, [pageState]);
-
-  const childrenVisibilityStyle =
+  const childrenVisibilityStyle: object =
     pageState !== "neutral" ? { display: "none" } : {};
 
   return (

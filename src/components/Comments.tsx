@@ -6,7 +6,7 @@ import { CheckVotes, Container, SeparatedDetails } from "./elements";
 
 import { setHeaderDescriber } from "../core/reducers/header";
 
-const Comments = ({ pageStates, setPageState }) => {
+const Comments: React.FC<{}> = ({ pageStates, setPageState }) => {
   const dispatch = useDispatch();
 
   const [postFetching, postData, postError] = useSinglePost();

@@ -1,16 +1,17 @@
 import React from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
 
 const useSingleSubreddit = () => {
   const { subredditID } = useParams();
 
-  const [fetching, setFetching] = React.useState(true);
-  const [data, setData] = React.useState([]);
-  const [noMoreData, setNoMoreData] = React.useState(false);
-  const [error, setError] = React.useState(false);
+  const [fetching, setFetching] = React.useState<boolean>(true);
+  const [data, setData] = React.useState<object>({});
+  const [noMoreData, setNoMoreData] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<boolean>(false);
 
-  const baseURL = "https://6040c786f34cf600173c8cb7.mockapi.io/subreddits";
+  const baseURL: string =
+    "https://6040c786f34cf600173c8cb7.mockapi.io/subreddits";
 
   const asyncFetch = async () => {
     try {

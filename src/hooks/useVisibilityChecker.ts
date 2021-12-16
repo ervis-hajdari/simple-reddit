@@ -1,7 +1,7 @@
 import React from "react";
 
-export default function useVisibilityChecker(ref) {
-  const [isIntersecting, setIntersecting] = React.useState(false);
+export default function useVisibilityChecker(ref: any) {
+  const [isIntersecting, setIntersecting] = React.useState<boolean>(false);
 
   const observer = new IntersectionObserver(([entry]) =>
     setIntersecting(entry.isIntersecting)

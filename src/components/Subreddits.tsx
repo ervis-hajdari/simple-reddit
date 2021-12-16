@@ -9,12 +9,24 @@ import { useSubreddits, useVisibilityChecker } from "../hooks";
 
 import { setHeaderDescriber } from "../core/reducers/header";
 
-const Subreddits = ({ pageStates, setPageState }) => {
+interface SubredditsProps {
+  pageStates: {
+    loading: string;
+    error: string;
+    neutral: string;
+  };
+  setPageState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Subreddits: React.FC<SubredditsProps> = ({
+  pageStates,
+  setPageState,
+}) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const ref = React.useRef();
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const [page, setPage] = React.useState(1);
   const [fetching, data, noMoreData, error] = useSubreddits(page);
@@ -39,14 +51,19 @@ const Subreddits = ({ pageStates, setPageState }) => {
 
   return (
     <div className="grid p-38 m-auto">
-      {data.map((reddit, ind) => (
-        <Container key={ind} onClick={() => navigate(`/r/${reddit.id}`)}>
-          <SeparatedDetails
-            title={reddit.title}
-            description={reddit.description}
-          />
-        </Container>
-      ))}
+      {data.map(
+        (
+          reddit: { title: string; description: string; id: string },
+          ind: number
+        ) => (
+          <Container key={ind} onClick={() => navigate(`/r/${reddit.id}`)}>
+            <SeparatedDetails
+              title={reddit.title}
+              description={reddit.description}
+            />
+          </Container>
+        )
+      )}
       {
         <div ref={ref} className="flex-center">
           {!noMoreData ? (
