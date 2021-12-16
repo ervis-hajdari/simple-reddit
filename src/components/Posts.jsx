@@ -10,7 +10,7 @@ import { CheckVotes, Container, SeparatedDetails } from "./elements";
 import { setHeaderDescriber } from "../core/reducers/header";
 import Loading from "react-loading";
 
-const Posts = ({ setLoading }) => {
+const Posts = ({ pageStates, setPageState }) => {
   const dispatch = useDispatch();
 
   const options = [
@@ -38,7 +38,9 @@ const Posts = ({ setLoading }) => {
   }, [subredditData]);
 
   React.useEffect(() => {
-    if (!subredditFetching && !postsFetching) setLoading(false);
+    if (subredditError || error) setPageState(pageStates.error);
+
+    if (!subredditFetching && !postsFetching) setPageState(pageStates.neutral);
   }, [subredditFetching, postsFetching]);
 
   React.useEffect(() => {
@@ -48,9 +50,9 @@ const Posts = ({ setLoading }) => {
   }, [lastElementIsVisible, postsData]);
 
   return (
-    <div className="p-40 flex">
+    <div className="p-40 flex posts-size-medium">
       <div
-        className="flex-column"
+        className="flex column"
         style={{
           flex: 1,
         }}
@@ -66,14 +68,13 @@ const Posts = ({ setLoading }) => {
             }}
           />
         </div>
-        <div
-          className="mt-30 flex-column"
-          style={{
-            width: "100%",
-          }}
-        >
+        <div className="mt-30 flex column align-end">
           {postsData.map((post, ind) => (
-            <div key={ind} className="pb-30 ml-auto" style={{ width: "65%" }}>
+            <div
+              key={ind}
+              className="pb-30"
+              style={{ maxWidth: 750, width: "100%" }}
+            >
               <div>
                 <Container key={ind}>
                   <CheckVotes likes={post.upvotes} />
@@ -99,7 +100,7 @@ const Posts = ({ setLoading }) => {
       </div>
 
       <div style={{ width: 60 }} />
-      <div style={{ width: "25%" }}>
+      <div className="pb-30" style={{ minWidth: 500 }}>
         <Container>
           <SeparatedDetails
             title={subredditData.title}

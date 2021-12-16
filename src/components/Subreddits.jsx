@@ -9,7 +9,7 @@ import { useSubreddits, useVisibilityChecker } from "../hooks";
 
 import { setHeaderDescriber } from "../core/reducers/header";
 
-const Subreddits = ({ setLoading }) => {
+const Subreddits = ({ pageStates, setPageState }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -32,11 +32,13 @@ const Subreddits = ({ setLoading }) => {
   }, [lastElementIsVisible, data]);
 
   React.useEffect(() => {
-    setLoading(false);
+    if (error) return setPageState(pageStates.error);
+
+    setPageState(pageStates.neutral);
   }, [fetching]);
 
   return (
-    <div className="grid p-38">
+    <div className="grid p-38 m-auto">
       {data.map((reddit, ind) => (
         <Container key={ind} onClick={() => navigate(`/r/${reddit.id}`)}>
           <SeparatedDetails

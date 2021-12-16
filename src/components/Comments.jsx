@@ -1,12 +1,12 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 
-import { useComments, usePosts, useSinglePost } from "../hooks";
+import { useComments, useSinglePost } from "../hooks";
 import { CheckVotes, Container, SeparatedDetails } from "./elements";
 
 import { setHeaderDescriber } from "../core/reducers/header";
 
-const Comments = ({ setLoading }) => {
+const Comments = ({ pageStates, setPageState }) => {
   const dispatch = useDispatch();
 
   const [postFetching, postData, postError] = useSinglePost();
@@ -17,11 +17,19 @@ const Comments = ({ setLoading }) => {
   }, [postData]);
 
   React.useEffect(() => {
-    if (!postFetching && !commentsFetching) setLoading(false);
+    if (postError || commentsError) return setPageState(pageStates.error);
+
+    if (!postFetching && !commentsFetching) setPageState(pageStates.neutral);
   }, [postFetching, commentsFetching]);
 
   return (
-    <div className="p-30 m-auto" style={{ width: "50%" }}>
+    <div
+      className="p-30 m-auto"
+      style={{
+        width: "100%",
+        maxWidth: 900,
+      }}
+    >
       <div>
         <Container>
           <CheckVotes likes={postData.upvotes} />
@@ -36,7 +44,7 @@ const Comments = ({ setLoading }) => {
           />
         </Container>
       </div>
-      <div className="px-64">
+      <div className="m-auto mobile-full-width" style={{ width: "86%" }}>
         <div className="py-20 text-light-gray">Comments</div>
         {commentsData.map((comment, ind) => (
           <div className="mb-30" key={ind}>

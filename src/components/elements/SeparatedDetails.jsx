@@ -10,7 +10,7 @@ const SeparatedDetails = ({ title, description, details, onClick }) => {
     >
       {title && (
         <div>
-          <h4 className="mt-0">{title}</h4>
+          <h4 className="mb-14">{title}</h4>
         </div>
       )}
       {description && (

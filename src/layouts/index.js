@@ -4,27 +4,44 @@ import Loading from "react-loading";
 import Header from "./Header";
 
 const AppLayout = ({ children }) => {
-  const [loading, setLoading] = React.useState(true);
+  const pageStates = {
+    loading: "loading",
+    error: "error",
+    neutral: "neutral",
+  };
 
-  React.useEffect(() => {
-    loading
-      ? (document.body.style.overflowX = "hidden")
-      : (document.body.style.overflowX = "auto");
-  }, [loading]);
+  const [pageState, setPageState] = React.useState(pageStates.loading);
 
-  const childrenVisibilityStyle = loading ? { visibility: "hidden" } : {};
+  // React.useEffect(() => {
+  //   pageState !== "neutral"
+  //     ? (document.body.style.overflowX = "hidden")
+  //     : (document.body.style.overflowX = "auto");
+  // }, [pageState]);
+
+  const childrenVisibilityStyle =
+    pageState !== "neutral" ? { display: "none" } : {};
 
   return (
     <div className="flex column" style={{ minHeight: "100vh" }}>
       <Header />
       <div style={{ position: "relative", flex: 1 }}>
-        {loading && (
-          <div className="flex justify-center py-60" style={{ width: "100%" }}>
-            <Loading type="spin" color="lightgray" width={47} />
-          </div>
-        )}
+        {
+          {
+            loading: (
+              <div
+                className="flex justify-center py-60"
+                style={{ width: "100%" }}
+              >
+                <Loading type="spin" color="lightgray" width={47} />
+              </div>
+            ),
+            error: <div>Something went wrong! Please report this.</div>,
+
+            neutral: null,
+          }[pageState]
+        }
         <div style={{ ...childrenVisibilityStyle }}>
-          {React.cloneElement(children, { setLoading })}
+          {React.cloneElement(children, { pageStates, setPageState })}
         </div>
       </div>
     </div>

@@ -1,0 +1,17 @@
+@media only screen and (max-width: 1200px) {
+  .posts-size-medium {
+    flex-direction: column-reverse;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .tablet-full-width {
+    width: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .mobile-full-width {
+    width: 100% !important;
+  }
+}
