@@ -34,7 +34,12 @@ const Posts = ({ pageStates, setPageState }) => {
   );
 
   React.useEffect(() => {
-    dispatch(setHeaderDescriber(`/r/${subredditData.title || ""}`));
+    dispatch(
+      setHeaderDescriber({
+        title: `/r/${subredditData.title || ""}`,
+        byUser: "",
+      })
+    );
   }, [subredditData]);
 
   React.useEffect(() => {

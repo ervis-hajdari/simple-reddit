@@ -12,12 +12,6 @@ const AppLayout = ({ children }) => {
 
   const [pageState, setPageState] = React.useState(pageStates.loading);
 
-  // React.useEffect(() => {
-  //   pageState !== "neutral"
-  //     ? (document.body.style.overflowX = "hidden")
-  //     : (document.body.style.overflowX = "auto");
-  // }, [pageState]);
-
   const childrenVisibilityStyle =
     pageState !== "neutral" ? { display: "none" } : {};
 

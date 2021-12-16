@@ -22,7 +22,7 @@ const Subreddits = ({ pageStates, setPageState }) => {
   const lastElementIsVisible = useVisibilityChecker(ref);
 
   React.useEffect(() => {
-    dispatch(setHeaderDescriber("subreddits"));
+    dispatch(setHeaderDescriber({ title: "subreddits", byUser: "" }));
   }, []);
 
   React.useEffect(() => {

@@ -1,19 +1,6 @@
 export const SET_HEADER_DESCRIBER = "MAIN/SET_HEADER_DESCRIBER";
 
-export const setHeaderDescriber = (headerDescriber, byUser) => {
-  if (byUser)
-    headerDescriber = (
-      <>
-        {headerDescriber}
-        <span className="ml-62">
-          by
-          <a className="ml-12" style={{ color: "#47e2ea" }}>
-            /u/{byUser}
-          </a>
-        </span>
-      </>
-    );
-
+export const setHeaderDescriber = (headerDescriber) => {
   return {
     type: SET_HEADER_DESCRIBER,
     headerDescriber,
@@ -22,7 +9,7 @@ export const setHeaderDescriber = (headerDescriber, byUser) => {
 
 export default function reducer(
   state = {
-    headerDescriber: "",
+    headerDescriber: { title: "", byUser: "" },
   },
   action
 ) {

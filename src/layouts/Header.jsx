@@ -24,7 +24,15 @@ const Header = () => {
       </div>
       <div style={{ width: 25 }} />
       <div>
-        <span>{headerDescriber}</span>
+        <span>{headerDescriber.title}</span>
+        {headerDescriber.byUser !== "" && (
+          <span className="ml-62">
+            by
+            <a className="ml-12" style={{ color: "#47e2ea" }}>
+              /u/{headerDescriber.byUser}
+            </a>
+          </span>
+        )}
       </div>
     </div>
   );

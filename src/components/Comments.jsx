@@ -13,7 +13,9 @@ const Comments = ({ pageStates, setPageState }) => {
   const [commentsFetching, commentsData, commentsError] = useComments();
 
   React.useEffect(() => {
-    dispatch(setHeaderDescriber(`${postData.title}`, postData.user));
+    dispatch(
+      setHeaderDescriber({ title: `${postData.title}`, byUser: postData.user })
+    );
   }, [postData]);
 
   React.useEffect(() => {
