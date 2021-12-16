@@ -1,23 +1,51 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router";
 
 import Select from "react-select";
 
-import { usePosts, useSubreddis } from "../hooks";
+import { usePosts, useSingleSubreddit, useVisibilityChecker } from "../hooks";
 import { CheckVotes, Container, SeparatedDetails } from "./elements";
 
-const Posts = () => {
+import { setHeaderDescriber } from "../core/reducers/header";
+import Loading from "react-loading";
+
+const Posts = ({ setLoading }) => {
+  const dispatch = useDispatch();
+
   const options = [
     { value: "title", label: "Title" },
     { value: "date", label: "Date" },
   ];
 
   const navigate = useNavigate();
+  const ref = React.useRef();
 
-  const [sortPosts, setSortPosts] = React.useState("");
+  const [sortPosts, setSortPosts] = React.useState("date");
+  const [page, setPage] = React.useState(1);
 
-  const [status, postsData, error] = usePosts(sortPosts);
-  const [st, subData, subError] = useSubreddis();
+  const lastElementIsVisible = useVisibilityChecker(ref);
+
+  const [subredditFetching, subredditData, subredditError] =
+    useSingleSubreddit();
+  const [postsFetching, postsData, noMoreData, error] = usePosts(
+    page,
+    sortPosts
+  );
+
+  React.useEffect(() => {
+    dispatch(setHeaderDescriber(`/r/${subredditData.title || ""}`));
+  }, [subredditData]);
+
+  React.useEffect(() => {
+    if (!subredditFetching && !postsFetching) setLoading(false);
+  }, [subredditFetching, postsFetching]);
+
+  React.useEffect(() => {
+    if (noMoreData) return;
+
+    if (lastElementIsVisible) setPage((prev) => prev + 1);
+  }, [lastElementIsVisible, postsData]);
 
   return (
     <div className="p-40 flex">
@@ -28,11 +56,14 @@ const Posts = () => {
         }}
       >
         <div className="flex justify-end align-center">
-          <span className="mr-18">Sort by</span>{" "}
+          <span className="mr-18">Sort by</span>
           <Select
             options={options}
             defaultValue={options[1]}
-            onChange={(value) => setSortPosts(value.value)}
+            onChange={(value) => {
+              setPage(1);
+              setSortPosts(value.value);
+            }}
           />
         </div>
         <div
@@ -45,12 +76,7 @@ const Posts = () => {
             <div key={ind} className="pb-30 ml-auto" style={{ width: "65%" }}>
               <div>
                 <Container key={ind}>
-                  <CheckVotes
-                    likes={12}
-                    currentVote={"neutral"}
-                    onDownVote={() => console.log("down")}
-                    onUpVote={() => console.log("up")}
-                  />
+                  <CheckVotes likes={post.upvotes} />
 
                   <SeparatedDetails
                     onClick={() => navigate(`${post.id}/comments`)}
@@ -62,6 +88,13 @@ const Posts = () => {
               </div>
             </div>
           ))}
+          <div ref={ref} className="flex-center">
+            {!noMoreData ? (
+              <Loading type="spin" width="40px" color="lightgray" />
+            ) : (
+              "You've reached the end"
+            )}
+          </div>
         </div>
       </div>
 
@@ -69,9 +102,12 @@ const Posts = () => {
       <div style={{ width: "25%" }}>
         <Container>
           <SeparatedDetails
-            title={subData.title}
-            description={subData.description}
-            details={{ user: subData.admin, createdAt: subData.createdAt }}
+            title={subredditData.title}
+            description={subredditData.description}
+            details={{
+              user: subredditData.admin,
+              createdAt: subredditData.createdAt,
+            }}
           />
         </Container>
       </div>

@@ -2,12 +2,11 @@ import React from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 
-const usePosts = (page, sortBy) => {
-  const { subredditID } = useParams();
+const useSinglePost = () => {
+  const { subredditID, postID } = useParams();
 
   const [fetching, setFeching] = React.useState(true);
   const [data, setData] = React.useState([]);
-  const [noMoreData, setNoMoreData] = React.useState(false);
   const [error, setError] = React.useState(false);
 
   const baseURL = "https://6040c786f34cf600173c8cb7.mockapi.io/subreddits";
@@ -15,13 +14,11 @@ const usePosts = (page, sortBy) => {
   const asyncFetch = async () => {
     try {
       const response = await axios.get(
-        baseURL + `/${subredditID}/posts?page=${page}&limit=10&sortBy=${sortBy}`
+        baseURL + `/${subredditID}/posts/${postID}`
       );
       const data = await response.data;
 
-      data.length === 0
-        ? setNoMoreData(true)
-        : setData((prev) => [...prev, ...data]);
+      setData(data);
 
       setFeching(false);
     } catch (e) {
@@ -30,11 +27,9 @@ const usePosts = (page, sortBy) => {
     }
   };
 
-  React.useEffect(() => setData([]), [sortBy]);
+  React.useEffect(() => asyncFetch(), []);
 
-  React.useEffect(() => asyncFetch(), [sortBy, page]);
-
-  return [fetching, data, noMoreData, error];
+  return [fetching, data, error];
 };
 
-export default usePosts;
+export default useSinglePost;

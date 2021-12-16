@@ -1,33 +1,37 @@
 import React from "react";
-import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 
-import { useComments, usePosts } from "../hooks";
+import { useComments, usePosts, useSinglePost } from "../hooks";
 import { CheckVotes, Container, SeparatedDetails } from "./elements";
 
-const Comments = () => {
-  const navigate = useNavigate();
+import { setHeaderDescriber } from "../core/reducers/header";
 
-  const [postLoading, singlePostData, postError] = usePosts();
-  const [commentsLoading, commentsData, commentsError] = useComments();
+const Comments = ({ setLoading }) => {
+  const dispatch = useDispatch();
+
+  const [postFetching, postData, postError] = useSinglePost();
+  const [commentsFetching, commentsData, commentsError] = useComments();
+
+  React.useEffect(() => {
+    dispatch(setHeaderDescriber(`${postData.title}`, postData.user));
+  }, [postData]);
+
+  React.useEffect(() => {
+    if (!postFetching && !commentsFetching) setLoading(false);
+  }, [postFetching, commentsFetching]);
 
   return (
     <div className="p-30 m-auto" style={{ width: "50%" }}>
       <div>
         <Container>
-          <CheckVotes
-            likes={12}
-            currentVote={"neutral"}
-            onDownVote={() => console.log("down")}
-            onUpVote={() => console.log("up")}
-          />
+          <CheckVotes likes={postData.upvotes} />
 
           <SeparatedDetails
-            onClick={() => navigate(`${singlePostData.id}/comments`)}
-            title={singlePostData.title}
-            description={singlePostData.body}
+            title={postData.title}
+            description={postData.body}
             details={{
-              user: singlePostData.user,
-              createdAt: singlePostData.createdAt,
+              user: postData.user,
+              createdAt: postData.createdAt,
             }}
           />
         </Container>
@@ -35,7 +39,7 @@ const Comments = () => {
       <div className="px-64">
         <div className="py-20 text-light-gray">Comments</div>
         {commentsData.map((comment, ind) => (
-          <div className="mb-30">
+          <div className="mb-30" key={ind}>
             <Container>
               <SeparatedDetails
                 key={ind}

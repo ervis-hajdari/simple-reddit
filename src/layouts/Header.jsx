@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 const Header = () => {
+  const headerDescriber = useSelector((state) => state.Header.headerDescriber);
   const navigate = useNavigate();
 
   return (
@@ -22,7 +24,7 @@ const Header = () => {
       </div>
       <div style={{ width: 25 }} />
       <div>
-        <span>subreddits</span>
+        <span>{headerDescriber}</span>
       </div>
     </div>
   );

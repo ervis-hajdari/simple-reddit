@@ -2,64 +2,62 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
-const CheckVotes = ({ likes }) => {
+const PreferenceAction = ({ type, preference, onClick }) => {
   const voteColors = {
-    upvote: "#6dc16d",
-    downvote: "#ca7979",
+    like: "#6dc16d",
+    dislike: "#ca7979",
     neutral: "#bdbbbb",
   };
 
+  return (
+    <div onClick={onClick} className="cursor-pointer">
+      <FontAwesomeIcon
+        icon={type === "like" ? faArrowUp : faArrowDown}
+        color={preference[type] ? voteColors[type] : voteColors.neutral}
+        className="icon-size"
+      />
+    </div>
+  );
+};
+
+const CheckVotes = ({ likes }) => {
   const [currentPreference, setCurrentPreference] = React.useState({
     like: false,
     dislike: false,
-    value: likes,
+    value: 0,
   });
 
-  const onUpVote = () => {
-    if (currentPreference.like)
-      return setCurrentPreference({
-        like: false,
-        dislike: false,
-        value: likes,
-      });
-
-    setCurrentPreference({ like: true, dislike: false, value: likes + 1 });
-  };
-
-  const onDownVote = () => {
-    if (currentPreference.dislike)
-      return setCurrentPreference({
-        like: false,
-        dislike: false,
-        value: likes,
-      });
-
-    setCurrentPreference({ like: false, dislike: true, value: likes - 1 });
-  };
+  React.useEffect(() => {
+    setCurrentPreference((prev) => ({ ...prev, value: likes }));
+  }, [likes]);
 
   return (
     <div className="py-22 pl-30 flex column align-center justify-between">
-      <div onClick={onUpVote} className="cursor-pointer">
-        <FontAwesomeIcon
-          icon={faArrowUp}
-          color={
-            currentPreference.like ? voteColors.upvote : voteColors.neutral
-          }
-          className="icon-size"
-        />
-      </div>
+      <PreferenceAction
+        type="like"
+        preference={currentPreference}
+        onClick={() =>
+          setCurrentPreference((prev) => ({
+            like: !prev.like,
+            dislike: false,
+            value: !prev.like ? likes + 1 : likes,
+          }))
+        }
+      />
       <div>
         <span>{currentPreference.value}</span>
       </div>
-      <div onClick={onDownVote} className="cursor-pointer">
-        <FontAwesomeIcon
-          icon={faArrowDown}
-          color={
-            currentPreference.dislike ? voteColors.downvote : voteColors.neutral
-          }
-          className="icon-size"
-        />
-      </div>
+      <PreferenceAction
+        type="dislike"
+        preference={currentPreference}
+        onClick={() =>
+          setCurrentPreference((prev) => ({
+            like: false,
+            dislike: !prev.dislike,
+            value: !prev.dislike ? likes - 1 : likes,
+          }))
+        }
+      />
     </div>
   );
 };

@@ -9,25 +9,38 @@ body {
   grid-gap: 34px;
 }
 
+// -- > flex
+
 .flex {
   display: flex;
-}
-
-.justify-end {
-  justify-content: flex-end;
-}
-
-.align-center {
-  align-items: center;
 }
 
 .column {
   flex-direction: column;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
 .justify-between {
   justify-content: space-between;
 }
+
+.align-center {
+  align-items: center;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// -- >
 
 .icon-size {
   font-size: 20px;
