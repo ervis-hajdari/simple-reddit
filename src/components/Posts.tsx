@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useParams, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 import Select from "react-select";
 
@@ -9,20 +9,17 @@ import { CheckVotes, Container, SeparatedDetails } from "./elements";
 
 import { setHeaderDescriber } from "../core/reducers/header";
 import Loading from "react-loading";
+import { PageProps } from "../interfaces/page";
 
-interface PostsProps {
-  pageStates: {
-    loading: string;
-    error: string;
-    neutral: string;
-  };
-  setPageState: React.Dispatch<React.SetStateAction<string>>;
+interface SortingOptions {
+  value: string;
+  label: string;
 }
 
-const Posts: React.FC<PostsProps> = ({ pageStates, setPageState }) => {
+const Posts: React.FC<PageProps> = ({ pageStates, setPageState }) => {
   const dispatch = useDispatch();
 
-  const options: object[] = [
+  const options: SortingOptions[] = [
     { value: "title", label: "Title" },
     { value: "date", label: "Date" },
   ];
@@ -43,11 +40,19 @@ const Posts: React.FC<PostsProps> = ({ pageStates, setPageState }) => {
   );
 
   React.useEffect(() => {
-    dispatch(setHeaderDescriber(`/r/${subredditData.title || ""}`));
+    dispatch(
+      setHeaderDescriber({
+        title: `/r/${subredditData.title || ""}`,
+        byUser: "",
+      })
+    );
   }, [subredditData]);
 
   React.useEffect(() => {
-    if (subredditError || error) setPageState(pageStates.error);
+    if (pageStates === undefined || setPageState === undefined)
+      return console.error("Props are missing in the component");
+
+    if (subredditError || error) return setPageState(pageStates.error);
 
     if (!subredditFetching && !postsFetching) setPageState(pageStates.neutral);
   }, [subredditFetching, postsFetching]);
@@ -72,6 +77,7 @@ const Posts: React.FC<PostsProps> = ({ pageStates, setPageState }) => {
             options={options}
             defaultValue={options[1]}
             onChange={(value) => {
+              if (!value) return;
               setPage(1);
               setSortPosts(value.value);
             }}

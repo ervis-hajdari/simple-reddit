@@ -1,17 +1,21 @@
-type Action = { type: "MAIN/SET_HEADER_DESCRIBER"; headerDescriber: string };
+interface Action {
+  type: "MAIN/SET_HEADER_DESCRIBER";
+  headerDescriber: { title: string; byUser: string };
+}
 
 export const SET_HEADER_DESCRIBER: string = "MAIN/SET_HEADER_DESCRIBER";
 
-export const setHeaderDescriber = (headerDescriber: string) => {
-  return {
-    type: SET_HEADER_DESCRIBER,
-    headerDescriber,
-  };
-};
+export const setHeaderDescriber = (headerDescriber: {
+  title: string;
+  byUser: string;
+}) => ({
+  type: SET_HEADER_DESCRIBER,
+  headerDescriber,
+});
 
 export default function reducer(
   state = {
-    headerDescriber: "",
+    headerDescriber: { title: "", byUser: "" },
   },
   action: Action
 ) {

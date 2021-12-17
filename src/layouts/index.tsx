@@ -9,7 +9,9 @@ interface PageStates {
   neutral: string;
 }
 
-const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const AppLayout: React.FC<{ children: React.ReactElement }> = ({
+  children,
+}) => {
   const pageStates: PageStates = {
     loading: "loading",
     error: "error",

@@ -6,7 +6,7 @@ const useSingleSubreddit = () => {
   const { subredditID } = useParams();
 
   const [fetching, setFetching] = React.useState<boolean>(true);
-  const [data, setData] = React.useState<object>({});
+  const [data, setData] = React.useState<object | any>({});
   const [noMoreData, setNoMoreData] = React.useState<boolean>(false);
   const [error, setError] = React.useState<boolean>(false);
 

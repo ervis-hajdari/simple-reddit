@@ -6,7 +6,7 @@ const useSinglePost = () => {
   const { subredditID, postID } = useParams();
 
   const [fetching, setFeching] = React.useState<boolean>(true);
-  const [data, setData] = React.useState<object>({});
+  const [data, setData] = React.useState<object | any>({});
   const [error, setError] = React.useState<boolean>(false);
 
   const baseURL: string =

@@ -6,7 +6,7 @@ const useComments = () => {
   const { subredditID, postID } = useParams();
 
   const [fetching, setFetching] = React.useState<boolean>(true);
-  const [data, setData] = React.useState<object[]>([]);
+  const [data, setData] = React.useState<object[] | any>([]);
   const [error, setError] = React.useState<boolean>(false);
 
   const asyncFetch = async () => {

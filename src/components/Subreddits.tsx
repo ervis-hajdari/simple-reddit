@@ -8,20 +8,9 @@ import Loading from "react-loading";
 import { useSubreddits, useVisibilityChecker } from "../hooks";
 
 import { setHeaderDescriber } from "../core/reducers/header";
+import { PageProps } from "../interfaces/page";
 
-interface SubredditsProps {
-  pageStates: {
-    loading: string;
-    error: string;
-    neutral: string;
-  };
-  setPageState: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const Subreddits: React.FC<SubredditsProps> = ({
-  pageStates,
-  setPageState,
-}) => {
+const Subreddits: React.FC<PageProps> = ({ pageStates, setPageState }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -34,7 +23,7 @@ const Subreddits: React.FC<SubredditsProps> = ({
   const lastElementIsVisible = useVisibilityChecker(ref);
 
   React.useEffect(() => {
-    dispatch(setHeaderDescriber("subreddits"));
+    dispatch(setHeaderDescriber({ title: "subreddits", byUser: "" }));
   }, []);
 
   React.useEffect(() => {
@@ -44,6 +33,9 @@ const Subreddits: React.FC<SubredditsProps> = ({
   }, [lastElementIsVisible, data]);
 
   React.useEffect(() => {
+    if (pageStates === undefined || setPageState === undefined)
+      return console.error("Props are missing in the component");
+
     if (error) return setPageState(pageStates.error);
 
     setPageState(pageStates.neutral);

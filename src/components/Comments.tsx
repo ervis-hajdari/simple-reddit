@@ -1,22 +1,28 @@
-import React from "react";
+import React, { SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 
 import { useComments, useSinglePost } from "../hooks";
 import { CheckVotes, Container, SeparatedDetails } from "./elements";
 
 import { setHeaderDescriber } from "../core/reducers/header";
+import { PageProps } from "../interfaces/page";
 
-const Comments: React.FC<{}> = ({ pageStates, setPageState }) => {
+const Comments: React.FC<PageProps> = ({ pageStates, setPageState }) => {
   const dispatch = useDispatch();
 
   const [postFetching, postData, postError] = useSinglePost();
   const [commentsFetching, commentsData, commentsError] = useComments();
 
   React.useEffect(() => {
-    dispatch(setHeaderDescriber(`${postData.title}`, postData.user));
+    dispatch(
+      setHeaderDescriber({ title: postData.title, byUser: postData.user })
+    );
   }, [postData]);
 
   React.useEffect(() => {
+    if (pageStates === undefined || setPageState === undefined)
+      return console.error("Props are missing in the component");
+
     if (postError || commentsError) return setPageState(pageStates.error);
 
     if (!postFetching && !commentsFetching) setPageState(pageStates.neutral);
@@ -46,17 +52,22 @@ const Comments: React.FC<{}> = ({ pageStates, setPageState }) => {
       </div>
       <div className="m-auto mobile-full-width" style={{ width: "86%" }}>
         <div className="py-20 text-light-gray">Comments</div>
-        {commentsData.map((comment, ind) => (
-          <div className="mb-30" key={ind}>
-            <Container>
-              <SeparatedDetails
-                key={ind}
-                description={comment.body}
-                details={{ user: comment.name, createdAt: comment.createdAt }}
-              />
-            </Container>
-          </div>
-        ))}
+        {commentsData.map(
+          (
+            comment: { body: string; name: string; createdAt: string },
+            ind: number
+          ) => (
+            <div className="mb-30" key={ind}>
+              <Container>
+                <SeparatedDetails
+                  key={ind}
+                  description={comment.body}
+                  details={{ user: comment.name, createdAt: comment.createdAt }}
+                />
+              </Container>
+            </div>
+          )
+        )}
       </div>
     </div>
   );

@@ -3,11 +3,15 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import reducers from "../core/reducers";
 // import mainReducers from "../../main-reducers";
 
+const combinedReducers = combineReducers({
+  ...reducers,
+});
+
 export default function configureStore() {
   return createStore(
-    combineReducers({
-      ...reducers,
-    })
+    combinedReducers
     // applyMiddleware(thunk)
   );
 }
+
+export type RootState = ReturnType<typeof combinedReducers>;
